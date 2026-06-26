@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard หลักสูตรวิทยาศาสตรมหาบัณฑิต สาขาวิชาพืชไร่</title>
+    
+    <!-- Fonts: Sarabun for Thai Readability -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Alpine.js for Interactivity -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Sarabun', 'sans-serif'],
+                    },
+                    colors: {
+                        kugreen: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            700: '#008060', /* Custom KU Green approximation */
+                            800: '#00664d',
+                            900: '#004d39',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        [x-cloak] { display: none !important; }
+        .smooth-transition { transition: all 0.3s ease-in-out; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased" x-data="agronomyDashboard()">
+
+    <!-- Header -->
+    <header class="bg-kugreen-800 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight">Dashboard ข้อมูลหลักสูตร</h1>
+                    <p class="text-sm mt-1 text-green-100">
+                        หลักสูตรวิทยาศาสตรมหาบัณฑิต สาขาวิชาพืชไร่ (หลักสูตรปรับปรุง พ.ศ. 2569)<br>
+                        ภาควิชาพืชไร่นา คณะเกษตร มหาวิทยาลัยเกษตรศาสตร์
+                    </p>
+                </div>
+                <div class="hidden md:block">
+                    <i class="fa-solid fa-leaf text-5xl text-kugreen-500 opacity-80"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Main Tabs -->
+        <div class="flex space-x-1 bg-gray-200 p-1 rounded-lg mb-8 shadow-inner w-full md:w-max">
+            <button @click="activeTab = 'courses'" 
+                    :class="{'bg-white text-kugreen-800 shadow': activeTab === 'courses', 'text-gray-600 hover:text-gray-800': activeTab !== 'courses'}"
+                    class="px-6 py-2.5 rounded-md font-medium text-sm focus:outline-none smooth-transition w-1/2 md:w-auto">
+                <i class="fa-solid fa-book-open mr-2"></i> คำอธิบายรายวิชา
+            </button>
+            <button @click="activeTab = 'plans'" 
+                    :class="{'bg-white text-kugreen-800 shadow': activeTab === 'plans', 'text-gray-600 hover:text-gray-800': activeTab !== 'plans'}"
+                    class="px-6 py-2.5 rounded-md font-medium text-sm focus:outline-none smooth-transition w-1/2 md:w-auto">
+                <i class="fa-solid fa-project-diagram mr-2"></i> แผนการศึกษา
+            </button>
+        </div>
+
+        <!-- Section 1: Course Descriptions -->
+        <section x-show="activeTab === 'courses'" x-cloak x-transition.opacity.duration.300ms>
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <!-- Search Bar -->
+                <div class="p-4 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
+                    <h2 class="text-lg font-semibold text-gray-800"><i class="fa-solid fa-list mr-2 text-kugreen-700"></i> รายการคำอธิบายรายวิชา</h2>
+                    <div class="relative w-full max-w-md ml-4">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-search text-gray-400"></i>
+                        </div>
+                        <input x-model="searchQuery" type="text" placeholder="ค้นหารหัสวิชา หรือ ชื่อวิชา..." 
+                               class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-kugreen-500 focus:border-kugreen-500 sm:text-sm smooth-transition">
+                    </div>
+                </div>
+
+                <!-- Course List (Accordion) -->
+                <div class="divide-y divide-gray-200">
+                    <template x-for="course in filteredCourses" :key="course.code">
+                        <div class="bg-white">
+                            <button @click="toggleCourse(course.code)" class="w-full text-left px-6 py-4 focus:outline-none hover:bg-gray-50 smooth-transition flex justify-between items-center group">
+                                <div class="flex items-center space-x-4">
+                                    <span class="inline-flex items-center justify-center px-3 py-1 rounded-full text-sm font-bold bg-kugreen-100 text-kugreen-800 w-24">
+                                        <span x-text="course.code"></span>
+                                    </span>
+                                    <div>
+                                        <h3 class="text-base font-semibold text-gray-900 group-hover:text-kugreen-700 smooth-transition" x-text="course.nameTh"></h3>
+                                        <p class="text-sm text-gray-500" x-text="course.nameEn"></p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    <span class="text-sm font-medium text-gray-600 bg-gray-100 px-3 py-1 rounded-md" x-text="course.credit + ' หน่วยกิต'"></span>
+                                    <i class="fa-solid fa-chevron-down text-gray-400 transform transition-transform duration-200" :class="{'rotate-180': expandedCourse === course.code}"></i>
+                                </div>
+                            </button>
+                            
+                            <!-- Expanded Content -->
+                            <div x-show="expandedCourse === course.code" x-collapse x-cloak class="px-6 pb-5 pt-1 bg-gray-50">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-200 mt-2">
+                                    <div>
+                                        <h4 class="text-sm font-bold text-gray-700 mb-2 border-l-4 border-kugreen-500 pl-2">ภาษาไทย</h4>
+                                        <p class="text-sm text-gray-600 leading-relaxed indent-8" x-text="course.descTh"></p>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-sm font-bold text-gray-700 mb-2 border-l-4 border-blue-500 pl-2">English</h4>
+                                        <p class="text-sm text-gray-600 leading-relaxed indent-8" x-text="course.descEn"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                    
+                    <!-- No Results -->
+                    <div x-show="filteredCourses.length === 0" x-cloak class="p-8 text-center text-gray-500">
+                        <i class="fa-regular fa-folder-open text-4xl mb-3 opacity-50"></i>
+                        <p>ไม่พบรายวิชาที่ค้นหา</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Study Plans -->
+        <section x-show="activeTab === 'plans'" x-cloak x-transition.opacity.duration.300ms>
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-6 border-b pb-3"><i class="fa-solid fa-map text-kugreen-700 mr-2"></i> แผนการศึกษา (Study Plans)</h2>
+                
+                <!-- Plan Sub Tabs -->
+                <div class="flex space-x-2 border-b border-gray-200 mb-6 overflow-x-auto">
+                    <template x-for="plan in studyPlans" :key="plan.id">
+                        <button @click="activePlan = plan.id"
+                                :class="{'border-kugreen-700 text-kugreen-800 border-b-2 font-semibold': activePlan === plan.id, 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activePlan !== plan.id}"
+                                class="whitespace-nowrap py-3 px-4 text-sm font-medium smooth-transition"
+                                x-text="plan.name">
+                        </button>
+                    </template>
+                </div>
+
+                <!-- Display Active Plan -->
+                <div x-data="{ currentPlanData: studyPlans.find(p => p.id === activePlan) }">
+                    <template x-for="yearData in studyPlans.find(p => p.id === activePlan).years" :key="yearData.title">
+                        <div class="mb-8">
+                            <h3 class="text-lg font-bold text-kugreen-800 bg-kugreen-50 px-4 py-2 rounded-t-lg border border-kugreen-100" x-text="yearData.title"></h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-0 border-x border-b border-gray-200 rounded-b-lg overflow-hidden">
+                                <!-- Semesters (Semester 1 & 2 usually side by side on desktop, stacked on mobile) -->
+                                <template x-for="sem in yearData.semesters" :key="sem.name">
+                                    <div class="p-0 md:border-r border-gray-200 last:border-r-0">
+                                        <div class="bg-gray-100 px-4 py-2 font-semibold text-sm text-gray-700 text-center border-b border-gray-200" x-text="sem.name"></div>
+                                        <table class="min-w-full divide-y divide-gray-200">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/4">รหัสวิชา</th>
+                                                    <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ชื่อวิชา</th>
+                                                    <th scope="col" class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-1/5">หน่วยกิต</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="bg-white divide-y divide-gray-100">
+                                                <template x-for="subject in sem.subjects" :key="subject.code">
+                                                    <tr class="hover:bg-gray-50">
+                                                        <td class="px-4 py-3 text-sm text-gray-500 whitespace-nowrap font-mono" x-text="subject.code"></td>
+                                                        <td class="px-4 py-3 text-sm text-gray-900" x-text="subject.name"></td>
+                                                        <td class="px-4 py-3 text-sm text-gray-600 text-center whitespace-nowrap" x-text="subject.credit"></td>
+                                                    </tr>
+                                                </template>
+                                            </tbody>
+                                            <tfoot class="bg-gray-50">
+                                                <tr>
+                                                    <td colspan="2" class="px-4 py-3 text-sm font-bold text-right text-gray-700">รวมหน่วยกิต</td>
+                                                    <td class="px-4 py-3 text-sm font-bold text-center text-kugreen-800" x-text="sem.totalCredit"></td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-gray-300 py-6 text-center text-sm mt-8">
+        <p>© 2026 ภาควิชาพืชไร่นา คณะเกษตร มหาวิทยาลัยเกษตรศาสตร์</p>
+        <p class="mt-1 opacity-75">ข้อมูลสำหรับอ้างอิง เค้าโครงหลักสูตรปรับปรุง พ.ศ. 2569</p>
+    </footer>
+
+    <!-- Application Logic -->
+    <script>
+        function agronomyDashboard() {
+            return {
+                activeTab: 'courses',
+                activePlan: 'plan1-1',
+                searchQuery: '',
+                expandedCourse: null,
+                
+                toggleCourse(code) {
+                    if (this.expandedCourse === code) {
+                        this.expandedCourse = null;
+                    } else {
+                        this.expandedCourse = code;
+                    }
+                },
+
+                get filteredCourses() {
+                    if (this.searchQuery === '') {
+                        return this.courses;
+                    }
+                    const lowerCaseQuery = this.searchQuery.toLowerCase();
+                    return this.courses.filter(course => {
+                        return course.code.toLowerCase().includes(lowerCaseQuery) ||
+                               course.nameTh.toLowerCase().includes(lowerCaseQuery) ||
+                               course.nameEn.toLowerCase().includes(lowerCaseQuery);
+                    });
+                },
+
+                // ข้อมูลคำอธิบายรายวิชา (คัดลอกบางส่วนเพื่อความสมบูรณ์และลดความยาวของโค้ด)
+                courses: [
+                    { code: '01003511', nameTh: 'พืชอาหารสัตว์ขั้นสูง', nameEn: 'Advanced Forage Crops', credit: '3(3-0-6)', descTh: 'ปัจจัยที่เกี่ยวข้องกับผลผลิตพืชอาหารสัตว์ภายใต้สภาพแวดล้อมของเขตร้อน การปรับตัวของพืชอาหารสัตว์ บทบาทของทุ่งหญ้าชั่วคราว นิเวศวิทยาของพืชอาหารสัตว์ในเขตร้อนและแห้งแล้ง เทคนิคงานวิจัยในพืชอาหารสัตว์ และการผลิตเมล็ดพันธุ์พืชอาหารสัตว์', descEn: 'Factors affecting pasture production under tropical conditions, pasture species adaptation, roles of lay pasture, arid zone pasture ecology and management, techniques in pasture research and tropical pasture seed production.' },
+                    { code: '01003512', nameTh: 'การผลิตพืชไร่อุตสาหกรรมขั้นสูง', nameEn: 'Advanced Production of Industrial Field Crops', credit: '3(3-0-6)', descTh: 'การผลิตและการตลาดของพืชไร่อุตสาหกรรมของประเทศไทยและของโลก ข้อจำกัดของสภาพแวดล้อมทางกายภาพ ชีวภาพ และเศรษฐกิจสังคมในการผลิต เทคโนโลยีที่เหมาะสมเพื่อประสิทธิภาพการผลิต ยุทธศาสตร์การเพิ่มขีดความสามารถการแข่งขันในตลาดโลก การเพิ่มมูลค่าสินค้า จัดการเพื่อเพิ่มมูลค่าของผลิตภัณฑ์เชิงเศรษฐกิจ การจัดการของเสียในการผลิตพืชไร่อุตสาหกรรม มาตรฐานสินค้าและการผลิต', descEn: 'Production and marketing of industrial field crops in Thailand and the world. Limitations of the physical, biological, and socio-economic environment in production. Appropriate technology for production efficiency. Strategies for increasing competitiveness in the world market. Adding value to products. Managing to add economic value to products. Waste management in industrial field crop production. Product and production standards.' },
+                    { code: '01003531', nameTh: 'การจัดการการผลิตพืชไร่และทรัพยากรธรรมชาติ', nameEn: 'Field Crop Production and Natural Resource Management', credit: '3(3-0-6)', descTh: 'กลยุทธ์ นโยบาย และหลักการผลิตพืชไร่ การวางแผนและการจัดการการผลิตพืชไร่ การจัดการทรัพยากรและสิ่งแวดล้อมในระบบนิเวศเกษตร ความเป็นกลางทางคาร์บอน การปลดปล่อยก๊าซเรือนกระจกสุทธิเป็นศูนย์ การควบคุมคุณภาพ การใช้ประโยชน์และการตลาดเพื่อความยั่งยืนในการผลิตพืชไร่ กรณีศึกษา ดูงานนอกสถานที่', descEn: 'Strategies, policies, and principles of crop production. Planning and management of field crop production. Management of resources and environment in agroecosystems. Carbon neutrality. Net zero emissions. Quality control. Utilization and marketing for sustainability in field crop production. Case study. Field trip required.' },
+                    { code: '01003532', nameTh: 'การเกษตรระดับนานาชาติ', nameEn: 'International Agriculture', credit: '3(3-0-6)', descTh: 'การศึกษานโยบายและการบริหารจัดการด้านการเกษตร การพัฒนาทางด้านการเกษตรระดับนานาชาติ ที่มาและการใช้ประโยชน์ข้อมูลหรือสารสนเทศ การดำเนินการทางการเกษตรภายใต้นโยบายด้านการเกษตรระดับนานาชาติ กฎหมายและข้อบังคับ มาตรฐานสินค้าเกษตรระดับนานาชาติ ข้อกำหนดระหว่างประเทศทางการค้าที่เกี่ยวข้องกับการเปลี่ยนแปลงสภาพภูมิอากาศและการลดการปล่อยก๊าซเรือนกระจก การศึกษาดูงาน', descEn: 'Agricultural policy and management studies. International agricultural development. Sources and use of data or information. Agricultural operation under international agricultural policy. International trade regulations related to climate change and the reduction of greenhouse gas emissions. Field trip required.' },
+                    { code: '01003541', nameTh: 'เทคนิควิจัยและเครื่องมือสมัยใหม่ทางพืชไร่', nameEn: 'Research Techniques and Modern Tools in Agronomy', credit: '3(2-2-5)', descTh: 'ทักษะห้องปฏิบัติการ เทคนิคภาคสนาม การเก็บตัวอย่าง เทคนิคการตรวจวัดการแลกเปลี่ยนก๊าซเรือนกระจก การวัดทางสรีรวิทยาและการเกษตร เทคนิคการอารักขาพืช เทคโนโลยีเมล็ดพันธุ์ กระบวนการและเครื่องมือทางด้านปรับปรุงพันธุ์ เทคนิคทางเทคโนโลยีชีวภาพ เทคโนโลยีและเครื่องมือสมัยใหม่ทางพืชไร่ โดรนการเกษตร มาตรฐานทางการเกษตรสำหรับพืชไร่', descEn: 'Laboratory skills. Field techniques. Sampling. Measurement techniques for greenhouse gas exchange. Physiological and agronomic measurements. Plant protection techniques. Seed technology. Breeding procedures and tools. Biotechnology application. Technologies and modern tools in agronomy. Agricultural drone. Agricultural standards for field crops.' },
+                    { code: '01003542', nameTh: 'สถิติและการเขียนโค้ดสำหรับการวิจัยทางการเกษตร', nameEn: 'Statistics and Coding for Agricultural Research', credit: '3(3-0-6)', descTh: 'บทบาทของสถิติในงานวิจัยทางการเกษตร แนวคิดและทฤษฎีเกี่ยวกับการวางแผนการทดลอง การวิเคราะห์ และการตีความ การวิเคราะห์การถดถอยและสหสัมพันธ์ การเขียนโค้ดเพื่อวิเคราะห์สถิติและการแสดงผลข้อมูล ภาษาอาร์และแพคเกจอาร์', descEn: 'Role of statistics in agricultural research. Concepts and theories of experimental design. Analysis and interpretation. Regression and correlation analysis. Coding for statistical analysis and data visualization. R language and packages.' },
+                    { code: '01003591', nameTh: 'ระเบียบวิธีวิจัยทางพืชไร่', nameEn: 'Research Methods in Agronomy', credit: '3(3-0-6)', descTh: 'หลักและระเบียบวิธีทางการวิจัยทางพืชไร่ การวิเคราะห์ปัญหาเพื่อกำหนดหัวข้องานวิจัย วิธีรวบรวมข้อมูลเพื่อการวางแผนการวิจัย การกำหนดตัวอย่างและเทคนิควิธีการ การวิเคราะห์ แปลผล และการวิจารณ์ผลการวิจัย การจัดทำรายงานเพื่อการนำเสนอในการประชุมและการตีพิมพ์', descEn: 'Research principles and methods in agronomy. Problem analysis for research topic identification. Data collection for research planning. Sampling design and research techniques. Analysis, interpretation, and discussion of results. Research report writing for presentation and publication.' },
+                    { code: '01003592', nameTh: 'การแลกเปลี่ยนเชิงวิชาการทางพืชไร่', nameEn: 'Colloquium in Agronomy', credit: '1(1-0-2)', descTh: 'การอ่าน ตีความ และอภิปรายเชิงวิพากษ์ การใช้เครื่องมือทางปัญญาประดิษฐ์สำหรับการแลกเปลี่ยนเชิงวิชาการด้านพืชไร่', descEn: 'Critical reading, interpretation, and discussion. Application of artificial intelligence tools for academic exchange in agronomy.' },
+                    { code: '01003595', nameTh: 'การศึกษาค้นคว้าอิสระ', nameEn: 'Independent Study', credit: '1-3', descTh: 'การศึกษาค้นคว้าอิสระ ในหัวข้อที่น่าสนใจระดับปริญญาโท และเรียบเรียงเป็นรายงาน', descEn: 'Independent study on interesting topic at the master\'s degree level and compile into a written report.' },
+                    { code: '01003597', nameTh: 'สัมมนา', nameEn: 'Seminar', credit: '1', descTh: 'การนำเสนอและอภิปรายหัวข้อที่น่าสนใจทางพืชไร่ในระดับปริญญาโท', descEn: 'Presentation and discussion on current interesting topic in agronomy at the master\'s degree level.' },
+                    { code: '01003599', nameTh: 'วิทยานิพนธ์', nameEn: 'Thesis', credit: '1-36', descTh: 'วิจัยในระดับปริญญาโท และเรียบเรียงเขียนเป็นวิทยานิพนธ์', descEn: 'Research at the master\'s degree level and compile into a thesis.' }
+                ],
+
+                // ข้อมูลแผนการศึกษา
+                studyPlans: [
+                    {
+                        id: 'plan1-1',
+                        name: 'แผน 1 แบบ ก 1 (ทำวิทยานิพนธ์ล้วน)',
+                        years: [
+                            {
+                                title: 'ปีที่ 1',
+                                semesters: [
+                                    { name: 'ภาคการศึกษาที่ 1', totalCredit: '9', subjects: [
+                                        { code: '01003591', name: 'ระเบียบวิธีวิจัยทางพืชไร่', credit: '3 (ไม่นับหน่วยกิต)' },
+                                        { code: '01003599', name: 'วิทยานิพนธ์', credit: '9' }
+                                    ]},
+                                    { name: 'ภาคการศึกษาที่ 2', totalCredit: '9', subjects: [
+                                        { code: '01003597', name: 'สัมมนา', credit: '1 (ไม่นับหน่วยกิต)' },
+                                        { code: '01003599', name: 'วิทยานิพนธ์', credit: '9' }
+                                    ]}
+                                ]
+                            },
+                            {
+                                title: 'ปีที่ 2',
+                                semesters: [
+                                    { name: 'ภาคการศึกษาที่ 1', totalCredit: '9', subjects: [
+                                        { code: '01003599', name: 'วิทยานิพนธ์', credit: '9' }
+                                    ]},
+                                    { name: 'ภาคการศึกษาที่ 2', totalCredit: '9', subjects: [
+                                        { code: '01003597', name: 'สัมมนา', credit: '1 (ไม่นับหน่วยกิต)' },
+                                        { code: '01003599', name: 'วิทยานิพนธ์', credit: '9' }
+                                    ]}
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'plan1-2',
+                        name: 'แผน 1 แบบ ก 2 (เรียนวิชา + วิทยานิพนธ์)',
+                        years: [
+                            {
+                                title: 'ปีที่ 1',
+                                semesters: [
+                                    { name: 'ภาคการศึกษาที่ 1', totalCredit: '10', subjects: [
+                                        { code: '01003541', name: 'เทคนิควิจัยและเครื่องมือสมัยใหม่ทางพืชไร่', credit: '3' },
+                                        { code: '01003591', name: 'ระเบียบวิธีวิจัยทางพืชไร่', credit: '3' },
+                                        { code: '01003592', name: 'การแลกเปลี่ยนเชิงวิชาการทางพืชไร่', credit: '1' },
+                                        { code: '-', name: 'วิชาเอกเลือก', credit: '3' }
+                                    ]},
+                                    { name: 'ภาคการศึกษาที่ 2', totalCredit: '13', subjects: [
+                                        { code: '01003542', name: 'สถิติและการเขียนโค้ดสำหรับการวิจัยทางการเกษตร', credit: '3' },
+                                        { code: '01003597', name: 'สัมมนา', credit: '1' },
+                                        { code: '01003599', name: 'วิทยานิพนธ์', credit: '3' },
+                                        { code: '-', name: 'วิชาเอกเลือก', credit: '6' }
+                                    ]}
+                                ]
+                            },
+                            {
+                                title: 'ปีที่ 2',
+                                semesters: [
+                                    { name: 'ภาคการศึกษาที่ 1', totalCredit: '9', subjects: [
+                                        { code: '01003599', name: 'วิทยานิพนธ์', credit: '6' },
+                                        { code: '-', name: 'วิชาเอกเลือก', credit: '3' }
+                                    ]},
+                                    { name: 'ภาคการศึกษาที่ 2', totalCredit: '4', subjects: [
+                                        { code: '01003597', name: 'สัมมนา', credit: '1' },
+                                        { code: '01003599', name: 'วิทยานิพนธ์', credit: '3' }
+                                    ]}
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'plan2',
+                        name: 'แผน 2 (เรียนวิชา + ค้นคว้าอิสระ)',
+                        years: [
+                            {
+                                title: 'ปีที่ 1',
+                                semesters: [
+                                    { name: 'ภาคการศึกษาที่ 1', totalCredit: '10', subjects: [
+                                        { code: '01003541', name: 'เทคนิควิจัยและเครื่องมือสมัยใหม่ทางพืชไร่', credit: '3' },
+                                        { code: '01003591', name: 'ระเบียบวิธีวิจัยทางพืชไร่', credit: '3' },
+                                        { code: '01003592', name: 'การแลกเปลี่ยนเชิงวิชาการทางพืชไร่', credit: '1' },
+                                        { code: '-', name: 'วิชาเอกเลือก', credit: '3' }
+                                    ]},
+                                    { name: 'ภาคการศึกษาที่ 2', totalCredit: '10', subjects: [
+                                        { code: '01003542', name: 'สถิติและการเขียนโค้ดสำหรับการวิจัยทางการเกษตร', credit: '3' },
+                                        { code: '01003597', name: 'สัมมนา', credit: '1' },
+                                        { code: '-', name: 'วิชาเอกเลือก', credit: '6' }
+                                    ]}
+                                ]
+                            },
+                            {
+                                title: 'ปีที่ 2',
+                                semesters: [
+                                    { name: 'ภาคการศึกษาที่ 1', totalCredit: '12', subjects: [
+                                        { code: '01003532', name: 'การเกษตรระดับนานาชาติ', credit: '3' },
+                                        { code: '01003595', name: 'การศึกษาค้นคว้าอิสระ', credit: '3' },
+                                        { code: '-', name: 'วิชาเอกเลือก', credit: '6' }
+                                    ]},
+                                    { name: 'ภาคการศึกษาที่ 2', totalCredit: '4', subjects: [
+                                        { code: '01003595', name: 'การศึกษาค้นคว้าอิสระ', credit: '3' },
+                                        { code: '01003597', name: 'สัมมนา', credit: '1' }
+                                    ]}
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    </script>
+</body>
+</html>
+```eof
+
+ไฟล์ HTML ที่สร้างให้ด้านบนนี้รวมทุกอย่างไว้ครบถ้วนครับ โดยใช้:
+*   **Tailwind CSS** ในการตกแต่งหน้าตาให้คลีน ทันสมัย และเป็นโทนสีเขียว-เทา ตามรูปแบบของมหาวิทยาลัยเกษตรศาสตร์
+*   **Alpine.js** ในการจัดการระบบ Tab (เปลี่ยนหน้า), ระบบ Accordion (เปิด-ปิดเนื้อหารายวิชา), และระบบ Search Filter (ค้นหารายวิชาแบบเรียลไทม์)
+
+วิธีการนำไปใช้งานคือสร้างไฟล์นามสกุล `.html` (เช่น `dashboard.html`) นำโค้ดด้านบนไปวาง และสามารถเปิดดูผ่าน Web Browser เช่น Chrome หรือ Edge ได้ทันทีครับ หากต้องการเพิ่มรายวิชาอื่นๆ ลงไป สามารถคัดลอกข้อมูลในโครงสร้าง Array `courses: [...]` ด้านล่างสุดของโค้ดเพิ่มได้เลยครับ
