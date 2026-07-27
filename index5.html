@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SeedTech | Modern Agronomy & AI</title>
+    <meta name="description" content="A modern learning platform for seed technology, field crops, and AI in agriculture.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Config for Custom Colors and Fonts -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            900: '#14532d',
+                        },
+                        tech: {
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            900: '#1e3a8a',
+                        }
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles for utility */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .bg-pattern {
+            background-image: radial-gradient(rgba(34, 197, 94, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 bg-gray-50 antialiased overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="w-10 h-10 bg-gradient-to-br from-brand-500 to-tech-500 rounded-xl flex items-center justify-center text-white shadow-lg mr-3">
+                        <i class="ph ph-plant text-2xl"></i>
+                    </div>
+                    <span class="font-bold text-2xl tracking-tight text-gray-900">Seed<span class="text-brand-600">Tech</span></span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-1 lg:space-x-4">
+                    <!-- Dropdown: Seed Technology -->
+                    <div class="relative group">
+                        <button class="px-4 py-2 text-gray-600 hover:text-brand-600 font-medium rounded-lg hover:bg-gray-50 transition-colors inline-flex items-center">
+                            Seed Technology <i class="ph ph-caret-down ml-1"></i>
+                        </button>
+                        <div class="absolute left-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-left scale-95 group-hover:scale-100">
+                            <div class="p-2 space-y-1">
+                                <a href="https://drive.google.com/file/d/1z8UQWa114w5O-TP-kxZmWsDtsmkY4b2y/view?usp=sharing" target="_blank" class="block px-4 py-3 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-700 rounded-lg transition-colors">
+                                    <div class="font-semibold mb-1">Agronomic Seed</div>
+                                    <div class="text-xs text-gray-500">Harvesting, Processing & Storage</div>
+                                </a>
+                                <a href="https://drive.google.com/file/d/1hGmumjmMigGyPKWT7lSLhDFWRCe6k2_g/view?usp=sharing" target="_blank" class="block px-4 py-3 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-700 rounded-lg transition-colors">
+                                    <div class="font-semibold mb-1">Improve Quality via AI</div>
+                                    <div class="text-xs text-gray-500">Modern technological approaches</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dropdown: Seed Production -->
+                    <div class="relative group">
+                        <button class="px-4 py-2 text-gray-600 hover:text-brand-600 font-medium rounded-lg hover:bg-gray-50 transition-colors inline-flex items-center">
+                            Seed Production <i class="ph ph-caret-down ml-1"></i>
+                        </button>
+                        <div class="absolute left-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-left scale-95 group-hover:scale-100">
+                            <div class="p-2 space-y-1">
+                                <a href="https://drive.google.com/file/d/1fneUi99yxIT2aKhcTeAr3cByOKBXoGWE/view?usp=sharing" target="_blank" class="block px-4 py-3 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-700 rounded-lg transition-colors">
+                                    <div class="font-semibold mb-1">Rice & Maize</div>
+                                    <div class="text-xs text-gray-500">Core production techniques</div>
+                                </a>
+                                <a href="https://drive.google.com/file/d/1FH1H2zQJUa9gwg0QLtNTHG0P3GpRjNsf/view?usp=sharing" target="_blank" class="block px-4 py-3 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-700 rounded-lg transition-colors">
+                                    <div class="font-semibold mb-1">Post-Harvest</div>
+                                    <div class="text-xs text-gray-500">Management & Preservation</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="#book" class="px-4 py-2 text-gray-600 hover:text-brand-600 font-medium rounded-lg hover:bg-gray-50 transition-colors">Book</a>
+                    
+                    <a href="#ai-classroom" class="ml-4 px-5 py-2.5 bg-gray-900 text-white hover:bg-gray-800 font-medium rounded-full transition-all shadow-md hover:shadow-lg inline-flex items-center">
+                        <i class="ph ph-sparkle mr-2 text-brand-500"></i> AI Classroom
+                    </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-gray-900 focus:outline-none p-2">
+                        <i class="ph ph-list text-3xl" id="menu-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-2xl">
+            <div class="px-4 pt-4 pb-6 space-y-4">
+                <!-- Mobile Seed Tech -->
+                <div>
+                    <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Seed Technology</div>
+                    <a href="https://drive.google.com/file/d/1z8UQWa114w5O-TP-kxZmWsDtsmkY4b2y/view?usp=sharing" target="_blank" class="block py-2 pl-4 text-gray-700 hover:text-brand-600 font-medium">1.1 Agronomic Seed</a>
+                    <a href="https://drive.google.com/file/d/1hGmumjmMigGyPKWT7lSLhDFWRCe6k2_g/view?usp=sharing" target="_blank" class="block py-2 pl-4 text-gray-700 hover:text-brand-600 font-medium">1.2 Improve Quality via AI</a>
+                </div>
+                
+                <!-- Mobile Seed Production -->
+                <div>
+                    <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Seed Production</div>
+                    <a href="https://drive.google.com/file/d/1fneUi99yxIT2aKhcTeAr3cByOKBXoGWE/view?usp=sharing" target="_blank" class="block py-2 pl-4 text-gray-700 hover:text-brand-600 font-medium">2.1 Rice & Maize</a>
+                    <a href="https://drive.google.com/file/d/1FH1H2zQJUa9gwg0QLtNTHG0P3GpRjNsf/view?usp=sharing" target="_blank" class="block py-2 pl-4 text-gray-700 hover:text-brand-600 font-medium">2.2 Post-Harvest Management</a>
+                </div>
+
+                <div class="border-t border-gray-100 pt-4">
+                    <a href="#book" class="block py-2 text-gray-700 hover:text-brand-600 font-medium">Digital Book</a>
+                    <a href="#ai-classroom" class="mt-4 block w-full text-center px-5 py-3 bg-gray-900 text-white font-medium rounded-xl">
+                        Enter AI Classroom
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-white">
+        <!-- Abstract Background Elements -->
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-brand-50 blur-3xl opacity-70"></div>
+        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-tech-500/10 blur-3xl opacity-70"></div>
+        <div class="absolute inset-0 bg-pattern opacity-50"></div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <button onclick="openAiClarifier()" class="inline-flex items-center px-5 py-2.5 rounded-full bg-white text-brand-700 font-semibold text-sm mb-6 border border-brand-200 shadow-sm hover:shadow-md hover:bg-brand-50 hover:border-brand-300 transition-all duration-300 cursor-pointer animate-fade-in-up group">
+                <span class="relative flex h-3 w-3 mr-3">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-3 w-3 bg-brand-500"></span>
+                </span>
+                <span class="mr-2">กดถามเลย ฮร๊าฟ</span> <span class="text-gray-600 font-normal">Ask AI to clarify a concept</span> <i class="ph ph-sparkle ml-2 text-brand-500 group-hover:rotate-12 transition-transform"></i>
+            </button>
+            
+            <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 tracking-tight mb-8 animate-fade-in-up" style="animation-delay: 0.1s;">
+                Master Seed Tech.<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-tech-600">Agronomic Seed</span>
+            </h1>
+            
+            <p class="mt-4 max-w-2xl mx-auto text-xl text-gray-600 mb-10 animate-fade-in-up" style="animation-delay: 0.2s;">
+                ยินดีต้อนรับ เป็นเกียรติยิ่งที่จะได้แลกเปลี่ยนเรียนรู้กับทุกท่าน ด้านล่างคือกรอบการสนทนาของเราในเทอมนี้คร๊าบ ตามไปสำรวจกันเล้ย
+            </p>
+            
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4 animate-fade-in-up" style="animation-delay: 0.3s;">
+                <a href="#seed-tech" class="w-full sm:w-auto px-8 py-4 bg-brand-600 hover:bg-brand-700 text-white rounded-full font-semibold text-lg transition-all shadow-lg hover:shadow-brand-500/30 flex items-center justify-center">
+                    Start Learning <i class="ph ph-arrow-down ml-2"></i>
+                </a>
+                <a href="#ai-classroom" class="w-full sm:w-auto px-8 py-4 bg-white border-2 border-gray-200 hover:border-gray-900 text-gray-900 rounded-full font-semibold text-lg transition-all flex items-center justify-center">
+                    <i class="ph ph-robot mr-2 text-xl"></i> AI Classroom
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Modules Container -->
+    <div class="bg-gray-50 py-24 relative" id="seed-tech">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Section 1: Seed Technology -->
+            <div class="mb-24 reveal">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-10">
+                    <div class="max-w-2xl">
+                        <div class="text-brand-600 font-bold tracking-wider uppercase text-sm mb-2">Module 1</div>
+                        <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Seed Technology</h2>
+                        <p class="mt-3 text-gray-600">สำรวจพื้นฐานของเมล็ดพันธุ์ในมุมของการเกษตร และค้นพบว่าปัญญาประดิษฐ์กำลังปฏิวัติการควบคุมคุณภาพอย่างไร</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Card 1.1 -->
+                    <a href="https://drive.google.com/file/d/1z8UQWa114w5O-TP-kxZmWsDtsmkY4b2y/view?usp=sharing" target="_blank" class="group bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl border border-gray-100 transition-all duration-300 relative overflow-hidden flex flex-col h-full">
+                        <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <i class="ph-fill ph-grains text-8xl text-brand-600"></i>
+                        </div>
+                        <div class="w-14 h-14 bg-brand-50 text-brand-600 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-inner group-hover:scale-110 transition-transform">
+                            <i class="ph ph-leaf"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-brand-600 transition-colors">Agronomic Seed</h3>
+                        <p class="text-gray-600 flex-grow mb-6">การเก็บเกี่ยว การปรับสภาพ การเก็บรักษา การขนส่ง และ การตลาดเมล็ดพันธุ์พืชไร่ (28 ก.ค. 69) </p>
+                        <div class="flex items-center text-brand-600 font-semibold text-sm">
+                            กด รับสไลด์ <i class="ph ph-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i>
+                        </div>
+                    </a>
+
+                    <!-- Card 1.2 -->
+                    <a href="https://drive.google.com/file/d/1hGmumjmMigGyPKWT7lSLhDFWRCe6k2_g/view?usp=sharing" target="_blank" class="group bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl border border-gray-100 transition-all duration-300 relative overflow-hidden flex flex-col h-full">
+                        <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <i class="ph-fill ph-cpu text-8xl text-tech-500"></i>
+                        </div>
+                        <div class="w-14 h-14 bg-tech-50 text-tech-600 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-inner group-hover:scale-110 transition-transform">
+                            <i class="ph ph-microchip"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-tech-600 transition-colors">Improve Quality Using AI</h3>
+                        <p class="text-gray-600 flex-grow mb-6">การเรียนรู้ของเครื่องจักรและคอมพิวเตอร์วิชั่นช่วยระบุข้อบกพร่องและประกันคุณภาพของเมล็ดพันธุ์ได้อย่างไร (18 ส.ค. 69)</p>
+                        <div class="flex items-center text-tech-600 font-semibold text-sm">
+                            กด รับสไลด์ <i class="ph ph-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Section 2: Seed Production -->
+            <div id="seed-production" class="pt-10 reveal">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-10">
+                    <div class="max-w-2xl">
+                        <div class="text-orange-500 font-bold tracking-wider uppercase text-sm mb-2">Module 2</div>
+                        <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Seed Production</h2>
+                        <p class="mt-3 text-gray-600">การนำหลักการไปปฏิบัติงานในการผลิตขนาดใหญ่ การลดความชื้น การปรับสภาพ และการเก็บรักษาเมล็ดพันธุ์พืชไร่ที่สำคัญ</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Card 2.1 -->
+                    <a href="https://drive.google.com/file/d/1fneUi99yxIT2aKhcTeAr3cByOKBXoGWE/view?usp=sharing" target="_blank" class="group bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl border border-gray-100 transition-all duration-300 relative overflow-hidden flex flex-col h-full">
+                         <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <i class="ph-fill ph-plant text-8xl text-orange-500"></i>
+                        </div>
+                        <div class="w-14 h-14 bg-orange-50 text-orange-500 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-inner group-hover:scale-110 transition-transform">
+                            <i class="ph ph-sun"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-orange-500 transition-colors">Rice & Maize Production</h3>
+                        <p class="text-gray-600 flex-grow mb-6">ร่วมกันสำรวจวิธีการผลิตเมล็ดพันธุ์ ข้อกำหนดและมาตรฐานในแปลงปลูกที่จำเป็นสำหรับเมล็ดพันธุ์ข้าวและข้าวโพดคุณภาพสูง (8 ก.ย. 69)</p>
+                        <div class="flex items-center text-orange-500 font-semibold text-sm">
+                            กด รับสไลด์ <i class="ph ph-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i>
+                        </div>
+                    </a>
+
+                    <!-- Card 2.2 -->
+                    <a href="https://drive.google.com/file/d/1FH1H2zQJUa9gwg0QLtNTHG0P3GpRjNsf/view?usp=sharing" target="_blank" class="group bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl border border-gray-100 transition-all duration-300 relative overflow-hidden flex flex-col h-full">
+                         <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <i class="ph-fill ph-barn text-8xl text-amber-600"></i>
+                        </div>
+                        <div class="w-14 h-14 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-inner group-hover:scale-110 transition-transform">
+                            <i class="ph ph-thermometer"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-amber-600 transition-colors">Post-Harvest Management</h3>
+                        <p class="text-gray-600 flex-grow mb-6">ขั้นตอนสำคัญหลังการเก็บเกี่ยว การลดความชื้นและวิธีการบรรจุภัณฑ์เพื่อป้องกันการเสื่อมของเมล็ดพันธุ์ (22 ก.ย. 69)</p>
+                        <div class="flex items-center text-amber-600 font-semibold text-sm">
+                            กด รับสไลด์ <i class="ph ph-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Resources Section (Book & AI Classroom) -->
+    <div class="bg-white py-24 relative overflow-hidden" id="book">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                
+                <!-- The Book -->
+                <div class="bg-gray-900 rounded-[2.5rem] p-10 md:p-14 text-white relative overflow-hidden group reveal">
+                    <!-- Deco -->
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-brand-500/20 rounded-full blur-3xl -mr-20 -mt-20"></div>
+                    <div class="absolute bottom-0 right-0 p-10 opacity-10 transform group-hover:scale-110 transition-transform duration-700">
+                        <i class="ph-fill ph-book-open text-9xl"></i>
+                    </div>
+                    
+                    <div class="relative z-10 h-full flex flex-col justify-center">
+                        <div class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-3xl mb-8 backdrop-blur-sm border border-white/10">
+                            <i class="ph ph-book-bookmark text-brand-400"></i>
+                        </div>
+                        <h2 class="text-4xl font-bold mb-4">The Official Book</h2>
+                        <p class="text-gray-300 text-lg mb-8 max-w-md">
+                            เวลามีน้อย ใช้สอยประหยัด ด้วยการเข้าถึงกรอบความคิดของเทคโนโลยีเมล็ดพันธุ์พืชไร่ ใน 150 หน้า (บวกลบ) ทุกที่-ทุกเวลา
+                        </p>
+                        <div class="mt-auto">
+                            <a href="https://ebook.lib.ku.ac.th/ebook27/ebook/20240008/#p=1" target="_blank" class="inline-flex items-center px-6 py-3 bg-brand-500 hover:bg-brand-600 text-white rounded-full font-semibold transition-colors">
+                                Read e-Book <i class="ph ph-arrow-up-right ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Classroom -->
+                <div id="ai-classroom" class="bg-gradient-to-br from-indigo-50 to-blue-100 rounded-[2.5rem] p-10 md:p-14 relative overflow-hidden group reveal" style="transition-delay: 0.2s;">
+                    <!-- Deco -->
+                    <div class="absolute bottom-0 right-0 w-64 h-64 bg-tech-500/20 rounded-full blur-3xl -mr-20 -mb-20"></div>
+                    <div class="absolute top-10 right-10 opacity-20 transform group-hover:rotate-12 transition-transform duration-700">
+                        <i class="ph-fill ph-robot text-9xl text-tech-600"></i>
+                    </div>
+
+                    <div class="relative z-10 h-full flex flex-col justify-center">
+                        <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-3xl mb-8 shadow-sm">
+                            <i class="ph ph-sparkle text-tech-600"></i>
+                        </div>
+                        <h2 class="text-4xl font-bold text-gray-900 mb-4">AI Classroom</h2>
+                        <p class="text-gray-700 text-lg mb-8 max-w-md">
+                            สัมผัสประสบการณ์การเรียนรู้ที่ไม่หยุดนิ่ง ด้วยสภาพแวดล้อม Gemini Notebook ของเรา ถามคำถาม ชี้แจงแนวคิด และโต้ตอบกับเนื้อหาแบบเรียลไทม์
+                        </p>
+                        <div class="mt-auto">
+                            <a href="https://notebooklm.google.com/notebook/943b7c04-257c-4c6a-9558-78e3857ae573?authuser=0" target="_blank" class="inline-flex items-center px-6 py-3 bg-gray-900 hover:bg-gray-800 text-white rounded-full font-semibold transition-all shadow-md hover:shadow-xl hover:-translate-y-1">
+                                Enter Workspace <i class="ph ph-arrow-up-right ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 border-t border-gray-200 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center mb-4 md:mb-0">
+                <i class="ph-fill ph-plant text-brand-600 text-2xl mr-2"></i>
+                <span class="font-bold text-xl text-gray-900">Seed<span class="text-brand-600">Tech</span></span>
+            </div>
+            <p class="text-gray-500 text-sm text-center md:text-left">
+                &copy; <span id="year"></span> SeedTech Educational Platform. Built for non-degree seeders. by Damrongvudhi Agron - KU.
+            </p>
+            <div class="flex space-x-4 mt-4 md:mt-0 items-center">
+                <!-- Decorative social/extra links -->
+                <a href="https://sites.google.com/view/agronseedlab/projects?authuser=0" target="_blank" class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:text-brand-600 hover:border-brand-600 transition-colors shadow-sm hover:shadow" title="Visit Agron Seed Lab">
+                    <i class="ph ph-share-network"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AI Concept Clarifier Modal -->
+    <div id="ai-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-gray-900/60 backdrop-blur-sm transition-opacity opacity-0 duration-300">
+        <div class="bg-white rounded-3xl p-6 md:p-8 max-w-lg w-full mx-4 shadow-2xl transform transition-transform scale-95 duration-300" id="ai-modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-brand-50 rounded-xl flex items-center justify-center text-brand-600 mr-3">
+                        <i class="ph ph-sparkle text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900">Concept Clarifier</h3>
+                </div>
+                <button onclick="closeAiClarifier()" class="text-gray-400 hover:text-gray-600 transition-colors p-2 rounded-lg hover:bg-gray-100">
+                    <i class="ph ph-x text-xl"></i>
+                </button>
+            </div>
+            
+            <p class="text-gray-600 text-sm mb-4">พิมพ์ศัพท์หรือวลีทางการเกษตร และ/หรือ เมล็ดพันธุ์ที่สนใจ เราจะอธิบายแบบเข้าใจง่ายให้คุณเองครับ</p>
+            
+            <div class="mb-4">
+                <input type="text" id="ai-concept-input" placeholder="e.g., Stratification, Vigor testing, Desiccation..." class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all">
+            </div>
+            
+            <button onclick="askGemini()" id="ai-submit-btn" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-semibold transition-colors flex items-center justify-center shadow-md">
+                <span>Simplify Concept</span>
+                <i class="ph ph-paper-plane-right ml-2"></i>
+            </button>
+
+            <!-- Loading State -->
+            <div id="ai-loading" class="hidden mt-6 text-center py-4">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-gray-200 border-t-brand-600 mb-2"></div>
+                <p class="text-sm text-gray-500 animate-pulse">Consulting the digital agronomist...</p>
+            </div>
+
+            <!-- Result State -->
+            <div id="ai-result-container" class="hidden mt-6 p-5 bg-gray-50 border border-gray-100 rounded-2xl relative">
+                <div class="absolute -top-3 left-6 bg-brand-100 text-brand-700 text-xs font-bold px-2 py-1 rounded shadow-sm flex items-center">
+                    <i class="ph ph-robot mr-1"></i> AI Explanation
+                </div>
+                <div id="ai-result-text" class="text-gray-700 text-sm leading-relaxed mt-2 prose prose-sm prose-brand max-w-none">
+                    <!-- Result goes here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Set current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        const icon = document.getElementById('menu-icon');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+            if (menu.classList.contains('hidden')) {
+                icon.classList.remove('ph-x');
+                icon.classList.add('ph-list');
+            } else {
+                icon.classList.remove('ph-list');
+                icon.classList.add('ph-x');
+            }
+        });
+
+        // Close mobile menu on link click
+        const mobileLinks = menu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+                icon.classList.remove('ph-x');
+                icon.classList.add('ph-list');
+            });
+        });
+
+        // Sticky Navbar styling on scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('shadow-sm');
+                navbar.classList.replace('py-0', 'py-1'); 
+            } else {
+                navbar.classList.remove('shadow-sm');
+                navbar.classList.replace('py-1', 'py-0');
+            }
+        });
+
+        // Intersection Observer for scroll animations (reveal effect)
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        };
+
+        const revealOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const revealObserver = new IntersectionObserver(revealCallback, revealOptions);
+        
+        revealElements.forEach(el => {
+            revealObserver.observe(el);
+        });
+
+        // AI Concept Clarifier Logic
+        const aiModal = document.getElementById('ai-modal');
+        const aiModalContent = document.getElementById('ai-modal-content');
+        const aiInput = document.getElementById('ai-concept-input');
+        const aiSubmitBtn = document.getElementById('ai-submit-btn');
+        const aiLoading = document.getElementById('ai-loading');
+        const aiResultContainer = document.getElementById('ai-result-container');
+        const aiResultText = document.getElementById('ai-result-text');
+
+        function openAiClarifier() {
+            aiModal.classList.remove('hidden');
+            aiModal.classList.add('flex');
+            // Trigger reflow for transition
+            setTimeout(() => {
+                aiModal.classList.remove('opacity-0');
+                aiModalContent.classList.remove('scale-95');
+                aiModalContent.classList.add('scale-100');
+                aiInput.focus();
+            }, 10);
+        }
+
+        function closeAiClarifier() {
+            aiModal.classList.add('opacity-0');
+            aiModalContent.classList.remove('scale-100');
+            aiModalContent.classList.add('scale-95');
+            setTimeout(() => {
+                aiModal.classList.add('hidden');
+                aiModal.classList.remove('flex');
+            }, 300); // match transition duration
+        }
+
+        // Close on clicking outside
+        aiModal.addEventListener('click', (e) => {
+            if (e.target === aiModal) {
+                closeAiClarifier();
+            }
+        });
+
+        // Allow pressing Enter to submit
+        aiInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                askGemini();
+            }
+        });
+
+        async function askGemini() {
+            const concept = aiInput.value.trim();
+            if (!concept) return;
+
+            // UI State: Loading
+            aiSubmitBtn.disabled = true;
+            aiSubmitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+            aiResultContainer.classList.add('hidden');
+            aiLoading.classList.remove('hidden');
+
+            const apiKey = ""; // Left empty for Canvas to provide at runtime
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+            
+            const systemPrompt = "You are an expert, approachable agronomy teacher speaking to a Gen Y/Z learner. They have asked you to clarify a term. Explain the following agricultural or seed technology concept in very simple, clear terms without academic fluff. Use modern analogies if helpful. Keep it concise (maximum 3-4 sentences). Format the response using basic markdown (bolding key terms).";
+
+            const payload = {
+                contents: [{ parts: [{ text: `Explain this concept: ${concept}` }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+            };
+
+            // Implement basic retry logic
+            const maxRetries = 3;
+            let retryCount = 0;
+            let success = false;
+
+            while (retryCount < maxRetries && !success) {
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const data = await response.json();
+                    
+                    if (data.candidates && data.candidates[0].content) {
+                        let text = data.candidates[0].content.parts[0].text;
+                        
+                        // Simple markdown parser for bolding since we asked for basic markdown
+                        text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                        text = text.replace(/\n/g, '<br>');
+
+                        aiResultText.innerHTML = text;
+                        success = true;
+                    } else {
+                        throw new Error("Invalid response format");
+                    }
+
+                } catch (error) {
+                    retryCount++;
+                    if (retryCount >= maxRetries) {
+                        aiResultText.innerHTML = `<span class="text-red-500">Sorry, I had trouble connecting to the knowledge base. Please try asking again.</span>`;
+                    } else {
+                        // Exponential backoff
+                        await new Promise(resolve => setTimeout(resolve, Math.pow(2, retryCount) * 1000));
+                    }
+                }
+            }
+
+            // UI State: Done
+            aiLoading.classList.add('hidden');
+            aiResultContainer.classList.remove('hidden');
+            aiSubmitBtn.disabled = false;
+            aiSubmitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+        }
+    </script>
+</body>
+</html>
