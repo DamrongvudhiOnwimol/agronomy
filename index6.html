@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth scroll-pt-24">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Field Crop Seed Tech | Master's Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        accent: {
+                            400: '#34d399',
+                            500: '#10b981',
+                            600: '#059669',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass { 
+            background: rgba(255, 255, 255, 0.7); 
+            backdrop-filter: blur(16px); 
+            -webkit-backdrop-filter: blur(16px);
+        }
+        .dark .glass { 
+            background: rgba(15, 23, 42, 0.75); 
+            backdrop-filter: blur(16px); 
+            -webkit-backdrop-filter: blur(16px);
+        }
+        /* Custom scrollbar for a polished look */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 antialiased selection:bg-accent-500 selection:text-white transition-colors duration-300">
+
+    <!-- Ambient Background Gradients -->
+    <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-accent-500/10 blur-[100px]"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40vw] h-[40vw] rounded-full bg-blue-500/10 blur-[100px]"></div>
+    </div>
+
+    <nav class="fixed top-0 w-full z-50 glass border-b border-slate-200/50 dark:border-slate-800/50 transition-all duration-300">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="#" class="font-bold text-xl tracking-tight text-slate-900 dark:text-white flex items-center gap-2 group">
+                <div class="w-6 h-6 bg-gradient-to-br from-accent-400 to-accent-600 rounded-lg group-hover:rotate-12 transition-transform"></div>
+                SeedTech<span class="text-accent-500"></span>
+            </a>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden lg:flex items-center gap-8">
+                <a href="#lecture" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-accent-600 dark:hover:text-accent-400 transition-colors">Lecture Slide</a>
+                <a href="#book" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-accent-600 dark:hover:text-accent-400 transition-colors">Book</a>
+                <a href="#laboratory" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-accent-600 dark:hover:text-accent-400 transition-colors">Laboratory</a>
+                <a href="#matlab" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-accent-600 dark:hover:text-accent-400 transition-colors">MATLAB</a>
+                
+                <!-- Theme Toggle -->
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-accent-500" aria-label="Toggle Dark Mode">
+                    <!-- Sun Icon -->
+                    <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-slate-600 dark:text-slate-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                    <!-- Moon Icon -->
+                    <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-slate-600 dark:text-slate-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                </button>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <div class="lg:hidden flex items-center gap-4">
+                <button id="mobile-theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors focus:outline-none">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                </button>
+                <button id="mobile-menu-btn" class="p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden lg:hidden absolute top-16 left-0 w-full glass border-b border-slate-200/50 dark:border-slate-800/50 py-4 flex flex-col px-6 gap-2 shadow-lg">
+            <a href="#lecture" class="mobile-link py-3 px-4 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 font-medium transition-colors">1. Lecture Slide</a>
+            <a href="#book" class="mobile-link py-3 px-4 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 font-medium transition-colors">2. Book</a>
+            <a href="#laboratory" class="mobile-link py-3 px-4 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 font-medium transition-colors">3. Laboratory</a>
+            <a href="#matlab" class="mobile-link py-3 px-4 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 font-medium transition-colors">4. MATLAB</a>
+        </div>
+    </nav>
+
+    <header class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 px-6">
+        <div class="max-w-4xl mx-auto text-center animate-fade-in-up">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-500/10 text-accent-600 dark:text-accent-400 text-sm font-semibold mb-8 border border-accent-500/20">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-accent-500"></span>
+                </span>
+                Master's Degree Resources
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-accent-500"></span>
+            </div>
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-8 leading-tight">
+                Master the Science of <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-500 to-blue-500">Seed Technology</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-10 font-light leading-relaxed">
+                วิชาเทคนิควิจัยและเครื่องมือสมัยใหม่ทางพืชไร่ครับ ภาคต้น 2569 ครับ อ. เป็ด ครับ รวมทุกอย่างไว้ที่นี่ครับ ไปลุยกันเลยคร๊าบ
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#lecture" class="px-8 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-semibold rounded-2xl hover:scale-105 hover:shadow-lg transition-all duration-300">
+                    Begin the Journey
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-6 pb-32 space-y-8 lg:space-y-12">
+        
+        <section id="lecture" class="scroll-mt-24">
+            <div class="group bg-white/60 dark:bg-slate-800/40 backdrop-blur-md rounded-3xl p-8 lg:p-12 border border-slate-200/60 dark:border-slate-700/50 flex flex-col md:flex-row items-center gap-8 lg:gap-12 hover:border-accent-500/30 dark:hover:border-accent-500/30 transition-colors duration-500 animate-on-scroll opacity-0 translate-y-8">
+                <div class="w-24 h-24 lg:w-32 lg:h-32 shrink-0 bg-accent-100 dark:bg-accent-900/30 text-accent-600 dark:text-accent-400 rounded-2xl flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 lg:w-16 lg:h-16">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605" />
+                    </svg>
+                </div>
+                <div class="flex-1 text-center md:text-left">
+                    <div class="text-sm font-bold tracking-widest text-slate-400 dark:text-slate-500 uppercase mb-2">Section 1</div>
+                    <h2 class="text-3xl font-bold mb-4 text-slate-900 dark:text-white">Lecture Slide</h2>
+                    <p class="text-slate-600 dark:text-slate-400 mb-8 text-lg font-light">
+                        สไลด์คร๊าบ มี 3 ไฟล ครับ เล่าที่มาของงาน Seed Tech. ที่มาของแล็ปฯ และ แบบสาธิตสนุก ๆ ที่เราจะลงมือกันครับ 
+                    </p>
+                    <a href="https://drive.google.com/drive/folders/18ZaQK-Sj-g_FieOoE9aPVyoXRUrMD4s7?usp=sharing" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-slate-100 dark:bg-slate-700 hover:bg-accent-50 dark:hover:bg-accent-900/40 text-slate-800 dark:text-white font-medium rounded-xl transition-colors">
+                        กดรับเลยจร้าาา
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="book" class="scroll-mt-24">
+            <div class="group bg-white/60 dark:bg-slate-800/40 backdrop-blur-md rounded-3xl p-8 lg:p-12 border border-slate-200/60 dark:border-slate-700/50 flex flex-col md:flex-row-reverse items-center gap-8 lg:gap-12 hover:border-accent-500/30 dark:hover:border-accent-500/30 transition-colors duration-500 animate-on-scroll opacity-0 translate-y-8 delay-100">
+                <div class="w-24 h-24 lg:w-32 lg:h-32 shrink-0 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-2xl flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 lg:w-16 lg:h-16">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                    </svg>
+                </div>
+                <div class="flex-1 text-center md:text-left">
+                    <div class="text-sm font-bold tracking-widest text-slate-400 dark:text-slate-500 uppercase mb-2">Section 2</div>
+                    <h2 class="text-3xl font-bold mb-4 text-slate-900 dark:text-white">Book: Seed Tech. of Field Crops</h2>
+                    <p class="text-slate-600 dark:text-slate-400 mb-8 text-lg font-light">
+                        หนังสือดี สั้น ตัดตรง ภาพเยอะ ดูผ่าน ๆ อ่านเพลิน ๆ (15 นาที) ก็เข้าถึงความฟินน์ของ Seed Scientist ได้เข้ม ๆ จร้าาาา
+                    </p>
+                    <a href="https://ebook.lib.ku.ac.th/ebook27/ebook/20240008/#p=1" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-slate-100 dark:bg-slate-700 hover:bg-blue-50 dark:hover:bg-blue-900/40 text-slate-800 dark:text-white font-medium rounded-xl transition-colors">
+                        กดอ่านเลยจร้าาา
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="laboratory" class="scroll-mt-24">
+            <div class="group bg-white/60 dark:bg-slate-800/40 backdrop-blur-md rounded-3xl p-8 lg:p-12 border border-slate-200/60 dark:border-slate-700/50 flex flex-col md:flex-row items-center gap-8 lg:gap-12 hover:border-accent-500/30 dark:hover:border-accent-500/30 transition-colors duration-500 animate-on-scroll opacity-0 translate-y-8 delay-200">
+                <div class="w-24 h-24 lg:w-32 lg:h-32 shrink-0 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-2xl flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 lg:w-16 lg:h-16">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
+                    </svg>
+                </div>
+                <div class="flex-1 text-center md:text-left">
+                    <div class="text-sm font-bold tracking-widest text-slate-400 dark:text-slate-500 uppercase mb-2">Section 3</div>
+                    <h2 class="text-3xl font-bold mb-4 text-slate-900 dark:text-white">Laboratory: Evaluation</h2>
+                    <p class="text-slate-600 dark:text-slate-400 mb-8 text-lg font-light">
+                        KUMOOC online laboratory course ว่าด้วยการทดสอบคุณภาพเมล็ดพันธุ์ สำหรับท่านที่ไม่มีพื้นฐาน รับรองความสนุก เรียนจบได้ใบ Cert. ด้วยจ่ะ
+                    </p>
+                    <a href="https://kumooc.ku.th/courses/70/info" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-slate-100 dark:bg-slate-700 hover:bg-purple-50 dark:hover:bg-purple-900/40 text-slate-800 dark:text-white font-medium rounded-xl transition-colors">
+                        กดดูเลยจร้าาา
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="matlab" class="scroll-mt-24">
+            <div class="group bg-white/60 dark:bg-slate-800/40 backdrop-blur-md rounded-3xl p-8 lg:p-12 border border-slate-200/60 dark:border-slate-700/50 flex flex-col md:flex-row-reverse items-center gap-8 lg:gap-12 hover:border-accent-500/30 dark:hover:border-accent-500/30 transition-colors duration-500 animate-on-scroll opacity-0 translate-y-8 delay-300">
+                <div class="w-24 h-24 lg:w-32 lg:h-32 shrink-0 bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 rounded-2xl flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 lg:w-16 lg:h-16">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.25 9.75L16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
+                    </svg>
+                </div>
+                <div class="flex-1 text-center md:text-left">
+                    <div class="text-sm font-bold tracking-widest text-slate-400 dark:text-slate-500 uppercase mb-2">Section 4</div>
+                    <h2 class="text-3xl font-bold mb-4 text-slate-900 dark:text-white">MATLAB Application</h2>
+                    <p class="text-slate-600 dark:text-slate-400 mb-8 text-lg font-light">
+                        MATLAB App. เดียว เคี้ยวได้ทุกงาน ตั้งแต่งานปล่อยจรวด รถไร้คนขับ ไปจนถึงการส่งมอบผลการวิเคราะห์สถิติที่ไร้ที่ติแก่ประชาคมวิจัย พิเศษสำหรับนิสิต KU เท่านั้น จัดว่าเลิศ
+                    </p>
+                    <a href="https://matlab.mathworks.com/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-slate-100 dark:bg-slate-700 hover:bg-orange-50 dark:hover:bg-orange-900/40 text-slate-800 dark:text-white font-medium rounded-xl transition-colors">
+                        Open MATLAB Platform
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 text-center py-10 mt-12 transition-colors duration-300">
+        <p class="text-slate-500 dark:text-slate-400 text-sm">
+            Field Crop Seed Production, Testing, and Storage<br>
+            &copy; <span id="year"></span> Damrongvudhi ONWIMOL, Agron | KU | TH
+        </p>
+    </footer>
+
+    <script>
+        // Set current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // ---------------------------------------------------
+        // Dark Mode Logic
+        // ---------------------------------------------------
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const mobileThemeToggleBtn = document.getElementById('mobile-theme-toggle');
+        const darkIcon = document.getElementById('theme-toggle-dark-icon');
+        const lightIcon = document.getElementById('theme-toggle-light-icon');
+
+        // Initial setup based on preferences
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            lightIcon.classList.remove('hidden');
+        } else {
+            document.documentElement.classList.remove('dark');
+            darkIcon.classList.remove('hidden');
+        }
+
+        function toggleTheme() {
+            darkIcon.classList.toggle('hidden');
+            lightIcon.classList.toggle('hidden');
+
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
+        }
+
+        themeToggleBtn.addEventListener('click', toggleTheme);
+        mobileThemeToggleBtn.addEventListener('click', toggleTheme);
+
+        // ---------------------------------------------------
+        // Mobile Menu Logic
+        // ---------------------------------------------------
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // ---------------------------------------------------
+        // Scroll Animations (Intersection Observer)
+        // ---------------------------------------------------
+        document.addEventListener("DOMContentLoaded", () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('opacity-100', 'translate-y-0');
+                        entry.target.classList.remove('opacity-0', 'translate-y-8');
+                        // Unobserve after animating once for better performance
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.animate-on-scroll').forEach((el) => {
+                observer.observe(el);
+            });
+            
+            // Add a simple fade-in for the hero section
+            setTimeout(() => {
+                document.querySelector('.animate-fade-in-up').classList.add('transition-all', 'duration-1000', 'opacity-100', 'translate-y-0');
+                document.querySelector('.animate-fade-in-up').classList.remove('opacity-0', 'translate-y-4');
+            }, 100);
+        });
+    </script>
+</body>
+</html>
