@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>From AGI to ASI | The Phase Transition of Intelligence</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: '#0a0a0f',
+                        card: 'rgba(255, 255, 255, 0.03)',
+                        accent: '#3b82f6',
+                        neon: '#60a5fa',
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0a0a0f;
+            color: #f8fafc;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0f; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3b82f6; 
+        }
+
+        /* Glassmorphism utilities */
+        .glass {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Fade-in Animation Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Iframe wrappers for responsiveness */
+        .iframe-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 0.75rem;
+            background: #1e293b;
+        }
+        .iframe-container::before {
+            content: "";
+            display: block;
+        }
+        .iframe-16-9::before { padding-top: 56.25%; }
+        .iframe-a4::before { padding-top: 141.4%; } /* A4 ratio approx */
+        
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-accent selection:text-white relative">
+
+    <!-- Background Effects -->
+    <div class="fixed inset-0 z-[-1] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik01OS45IDB2NjAuMUgwVjB6IiBmaWxsPSJub25lIi8+CjxwYXRoIGQ9Ik01OS45IDB2NjAuMUgwVjB6IiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4wMykiIHN0cm9rZS13aWR0aD0iMSIvPgo8L3N2Zz4=')] opacity-30"></div>
+    <div class="fixed inset-0 z-[-1] bg-gradient-radial from-blue-900/20 via-dark to-dark opacity-70"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass border-b border-white/10 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.5)]">
+                        <i data-lucide="brain-circuit" class="text-white w-6 h-6"></i>
+                    </div>
+                    <span class="font-display font-bold text-xl tracking-tight hidden sm:block">Colloquium in <span class="text-neon">Agronomy</span></span>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-1 lg:space-x-4">
+                    <a href="#arxiv" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors">1. arXiv</a>
+                    <a href="#infographic" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors">2. Infographic</a>
+                    <a href="#vdo-eng" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors">3. VDO (Eng)</a>
+                    <a href="#vdo-th" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors">4. VDO (Th)</a>
+                    <a href="#pdf" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors">5. PDF</a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-300 hover:text-white focus:outline-none p-2">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden glass border-t border-white/5">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#arxiv" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-white/5">1. arXiv</a>
+                <a href="#infographic" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-white/5">2. Infographic</a>
+                <a href="#vdo-eng" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-white/5">3. VDO (Eng)</a>
+                <a href="#vdo-th" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-white/5">4. VDO (Th)</a>
+                <a href="#pdf" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-white/5">5. PDF</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden flex flex-col justify-center min-h-[90vh]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-4xl mx-auto reveal">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 text-sm font-medium mb-6">
+                    <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                </span>
+                Agronomy master's class
+            </div>
+            <h1 class="text-5xl md:text-7xl font-display font-bold tracking-tight mb-8">
+                From <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500">AGI</span> to <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">ASI</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-400 font-light leading-relaxed mb-10">
+                We can only see a short distance ahead, but we can see plenty there that needs to be done. <span class="italic">Alan Turing (1950)</span>
+            </p>
+
+            <!-- Academic Rationale (Personalized) -->
+            <div class="bg-card glass rounded-2xl p-6 md:p-8 text-left border border-white/5 shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-blue-500 to-purple-600"></div>
+                <i data-lucide="microscope" class="w-8 h-8 text-blue-400 mb-4 opacity-50"></i>
+                <p class="text-gray-300 text-sm md:text-base leading-relaxed font-sans font-normal not-italic tracking-wide">
+                    เราใช้ AI ทุกวัน ทั้งทางตรงและทางอ้อม เราได้รับผลกระทบทุกวัน ทั้งทางบวกและทางลบ หากขจัดความรู้สึกออกไป จริง ๆ แล้วมันคืออะไรกันแน่ และ AI ด้วยตัวมันเอง มันกำลังกังวลเรื่องอะไร
+                    <br><br>
+                    ทีมนักวิจัยหัวกะทิจาก Google ได้เผยแพร่บทความที่บอกกล่าวเราถึงประเด็นเหล่านี้อย่างถึงแก่น 
+                </p>
+            </div>
+            
+            <div class="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#arxiv" class="inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-xl text-white bg-blue-600 hover:bg-blue-700 transition-all shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)]">
+                        มาเล่นกันเถอะ ๆ 
+                        <i data-lucide="arrow-right" class="ml-2 w-5 h-5"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-32">
+
+        <!-- 1. arXiv Section -->
+        <section id="arxiv" class="scroll-mt-28 reveal">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
+                    <span class="font-display font-bold text-xl text-blue-400">1</span>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-display font-bold">ต้นฉบับบทความ <span class="text-gray-500 font-light text-2xl ml-2">arXiv</span></h2>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-1 space-y-6">
+                    <p class="text-gray-400 leading-relaxed text-lg">
+                        แม้ว่า arXiv จะไม่มีการตรวจสอบโดยผู้ทรงคุณวุฒิ แต่มีคณะผู้ดูแลในแต่ละสาขาคอยตรวจสอบบทความที่ส่งเข้ามา และด้วยความที่บทความนี้มันสดใหม่และคณะผู้เขียนบทความนี้ "มันช่างจ้าซะเหลือเกิน"... เราจึงควรฟัง ^_^
+                    </p>
+                    <a href="https://arxiv.org/html/2606.12683v1" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center justify-between w-full p-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-blue-500/50 transition-all">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="external-link" class="w-5 h-5 text-blue-400"></i>
+                            <span class="font-medium">Open HTML Version</span>
+                        </div>
+                        <i data-lucide="arrow-up-right" class="w-5 h-5 text-gray-500 group-hover:text-white transition-colors"></i>
+                    </a>
+                </div>
+                <div class="lg:col-span-2">
+                    <!-- Displaying an iframe of the arXiv HTML page. Fallback link provided above if blocked by X-Frame-Options -->
+                    <div class="iframe-container h-[500px] border border-white/10 shadow-xl rounded-2xl relative group">
+                        <div class="absolute inset-0 bg-dark/80 z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
+                            <a href="https://arxiv.org/html/2606.12683v1" target="_blank" class="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium shadow-lg hover:bg-blue-500 transition-colors flex items-center gap-2">
+                                <i data-lucide="maximize-2" class="w-4 h-4"></i> Read Fullscreen
+                            </a>
+                        </div>
+                        <iframe src="https://arxiv.org/html/2606.12683v1" title="arXiv HTML Paper" loading="lazy" class="rounded-xl bg-white"></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Infographic Section -->
+        <section id="infographic" class="scroll-mt-28 reveal">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-12 rounded-full bg-purple-500/10 flex items-center justify-center border border-purple-500/20">
+                    <span class="font-display font-bold text-xl text-purple-400">2</span>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-display font-bold">Visual Synthesis <span class="text-gray-500 font-light text-2xl ml-2">Infographic</span></h2>
+            </div>
+
+            <div class="bg-card glass rounded-2xl border border-white/5 p-4 md:p-8 shadow-xl">
+                <p class="text-gray-400 mb-6 max-w-3xl">
+                    ภาพเดียว เคี้ยวกรุบ (เริ่มจากภาพรวม แล้วค่อยขุดให้ลึกกันต่อ)
+                </p>
+                <div class="iframe-container iframe-16-9 bg-black/50 border border-white/10 rounded-xl">
+                    <!-- Changed /view to /preview for embedding Google Drive files -->
+                    <iframe src="https://drive.google.com/file/d/1XDOWBjokSrsYrUzjqqMonnznU8ZazlRT/preview" allow="autoplay" loading="lazy"></iframe>
+                </div>
+                <div class="mt-4 flex justify-end">
+                    <a href="https://drive.google.com/file/d/1XDOWBjokSrsYrUzjqqMonnznU8ZazlRT/view?usp=sharing" target="_blank" class="text-sm text-purple-400 hover:text-purple-300 flex items-center gap-1 transition-colors">
+                        <i data-lucide="download" class="w-4 h-4"></i> Download / View Original
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. VDO overview - Eng -->
+        <section id="vdo-eng" class="scroll-mt-28 reveal">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
+                    <span class="font-display font-bold text-xl text-emerald-400">3</span>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-display font-bold">Module Overview <span class="text-gray-500 font-light text-2xl ml-2">English Audio</span></h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-8">
+                    <div class="iframe-container iframe-16-9 shadow-[0_0_30px_rgba(0,0,0,0.5)] border border-white/10 rounded-2xl overflow-hidden group">
+                        <iframe src="https://drive.google.com/file/d/1gj-9RRzKkz4abRENuGI53FmD6yzLFaQy/preview" allow="autoplay" loading="lazy"></iframe>
+                    </div>
+                </div>
+                <div class="lg:col-span-4 space-y-6">
+                    <div class="p-6 rounded-2xl bg-gradient-to-br from-emerald-900/20 to-transparent border border-emerald-500/20">
+                        <h3 class="text-xl font-display font-semibold text-emerald-300 mb-3 flex items-center gap-2">
+                            <i data-lucide="globe" class="w-5 h-5"></i>
+                            Global Context
+                        </h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            วิดีโอสรุปวิธีการหลักและผลการค้นพบที่นำเสนอในบทความ เข้าใจได้ง่ายและเร็ว โดยขจัดความคลุมเครือและมุ่งไปที่กลไกที่ชัดเจนของการวัดระดับสติปัญญา
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. VDO overview - Th -->
+        <section id="vdo-th" class="scroll-mt-28 reveal">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-12 rounded-full bg-orange-500/10 flex items-center justify-center border border-orange-500/20">
+                    <span class="font-display font-bold text-xl text-orange-400">4</span>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-display font-bold">Module Overview <span class="text-gray-500 font-light text-2xl ml-2">Thai Audio</span></h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center flex-col-reverse lg:flex-row">
+                <div class="lg:col-span-4 space-y-6 order-2 lg:order-1">
+                    <div class="p-6 rounded-2xl bg-gradient-to-br from-orange-900/20 to-transparent border border-orange-500/20">
+                        <h3 class="text-xl font-display font-semibold text-orange-300 mb-3 flex items-center gap-2">
+                            <i data-lucide="message-square" class="w-5 h-5"></i>
+                            Localized Instruction
+                        </h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            ภาษาไทยจร้า... ที่ผ่านมาเล่าภาพรวม ทีนี้จะชวนคิดถึงอนาคตกันบ้างครับ
+                        </p>
+                    </div>
+                </div>
+                <div class="lg:col-span-8 order-1 lg:order-2">
+                    <div class="iframe-container iframe-16-9 shadow-[0_0_30px_rgba(0,0,0,0.5)] border border-white/10 rounded-2xl overflow-hidden">
+                        <iframe src="https://drive.google.com/file/d/1PRiJuPiv650uJNqMxDkaVY_E6G9wWKND/preview" allow="autoplay" loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. PDF Section -->
+        <section id="pdf" class="scroll-mt-28 reveal mb-20">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center border border-red-500/20">
+                    <span class="font-display font-bold text-xl text-red-400">5</span>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-display font-bold">Manuscript <span class="text-gray-500 font-light text-2xl ml-2">PDF Archive</span></h2>
+            </div>
+
+            <div class="bg-card glass rounded-2xl p-6 md:p-8 border border-white/5 flex flex-col md:flex-row gap-8 items-center justify-between">
+                <div class="max-w-2xl">
+                    <h3 class="text-2xl font-display font-semibold mb-4">สำหรับท่านที่ชอบ pdf มาทางนี้คร๊าบ</h3>
+                    <p class="text-gray-400 mb-6 leading-relaxed">
+                        ดึงปลัก internet เก็บ pdf ไปบ่ม-ทำความเข้าใจเงียบ ๆ ก็น่าสนใจไปอีกแบบ
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <a href="https://arxiv.org/pdf/2606.12683v1" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-red-600/90 hover:bg-red-500 text-white font-medium transition-all shadow-lg hover:shadow-red-500/25">
+                            <i data-lucide="file-text" class="w-5 h-5"></i>
+                            Access PDF Document
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Stylized Document Icon -->
+                <div class="hidden md:flex flex-shrink-0 w-40 h-48 bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg border border-gray-700 shadow-2xl relative transform rotate-3 hover:rotate-0 transition-transform duration-500 p-4 flex-col gap-2">
+                    <div class="w-full h-2 bg-gray-700 rounded"></div>
+                    <div class="w-3/4 h-2 bg-gray-700 rounded"></div>
+                    <div class="w-5/6 h-2 bg-gray-700 rounded mt-2"></div>
+                    <div class="w-full h-2 bg-gray-700 rounded"></div>
+                    <div class="w-2/3 h-2 bg-gray-700 rounded"></div>
+                    <div class="absolute bottom-4 right-4 bg-red-500 text-[10px] font-bold px-2 py-1 rounded text-white tracking-widest">PDF</div>
+                </div>
+                <div id="pdf-viewer" class="hidden mt-8 w-full h-[800px] border border-white/10 rounded-2xl overflow-hidden shadow-2xl transition-all duration-500">
+                <object data="https://arxiv.org/pdf/2606.12683v1" type="application/pdf" width="100%" height="100%" class="bg-white">
+                    <p class="p-8 text-center text-gray-400">Your browser does not support inline PDFs. <a href="https://arxiv.org/pdf/2606.12683v1" class="text-blue-400 underline">Click here to download the PDF</a>.</p>
+                </object>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-dark py-12 relative overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-20"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                🌱</p>
+                <span class="font-display font-semibold text-lg text-gray-300">Colloquium in Agronomy</span>
+            </div>
+            <p class="text-gray-500 text-sm text-center md:text-left">
+                &copy; 2026 | DO | AGRONOMY | KU | TH
+            </p>
+            <div class="flex gap-4">
+                <button onclick="window.scrollTo(0,0)" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-colors">
+                    <i data-lucide="arrow-up" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+            });
+        });
+
+        // Navbar styling on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 20) {
+                nav.classList.add('shadow-lg', 'bg-dark/80');
+            } else {
+                nav.classList.remove('shadow-lg', 'bg-dark/80');
+            }
+        });
+
+        // Intersection Observer for scroll animations (Reveal effects)
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach((element) => {
+            observer.observe(element);
+        });
+    </script>
+</body>
+</html>
